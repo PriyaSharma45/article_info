@@ -1,0 +1,6 @@
+version: 2
+endpoint: https://author-articles.herokuapp.com
+metadata_directory: metadata
+actions:
+  kind: synchronous
+  handler_webhook_baseurl: https://author-articles.herokuapp.com

@@ -2,12 +2,27 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
+import { Auth0Provider } from "../src/components/AuthWrapper";
 import * as serviceWorker from './serviceWorker';
+import { createBrowserHistory } from "history";
+
+const onRedirectCallback = appState => {
+  createBrowserHistory().push(
+    appState && appState.targetUrl
+      ? appState.targetUrl
+      : window.location.pathname
+  );
+};
 
 ReactDOM.render(
-  <React.StrictMode>
+  <Auth0Provider
+    domain="dev-mjt5l0yh.eu.auth0.com"
+    client_id="BsFc5f88QkaQGOp70q3IpLXPyNOoSLWj"
+    redirect_uri={window.location.origin}
+    onRedirectCallback={onRedirectCallback}
+  >
     <App />
-  </React.StrictMode>,
+  </Auth0Provider>,
   document.getElementById('root')
 );
 
