@@ -6,7 +6,7 @@ import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
-import { ADD_ARTICLE, ADD_AUTHOR } from '../../graphql/mutation';
+import { ADD_ARTICLE } from '../../graphql/mutation';
 import { useMutation } from '@apollo/client'
 import { useAuth0 } from '../AuthWrapper';
 
@@ -53,7 +53,7 @@ const Author = ({ name, dob, articles, authorId }) => {
     return articles.map(article => <li><span>{article.title} {article.published_date}</span></li>)
   }
 
-  const [saveArticle, { error: saveArticleError }] = useMutation(ADD_ARTICLE, {});
+  const [saveArticle] = useMutation(ADD_ARTICLE, {});
 
   const clearInputs = () => {
     setTitle('')
@@ -97,44 +97,12 @@ const Author = ({ name, dob, articles, authorId }) => {
 
 const AuthorList = ({ authors }) => {
 
-  const [name, setName] = React.useState('')
-  const [dob, setDOB] = React.useState('')
-
-  const {
-    isAuthenticated
-  } = useAuth0();
-
-  const [saveAuthor, { error: saveAuthorError }] = useMutation(ADD_AUTHOR, {});
-
   const renderAuthorList = () =>
     authors.map(author => <Author name={author ? author.name : 'No name specified'} dob={author.dob} articles={author.articles} authorId={author.id} />);
 
-  if (authors.length == 0) {
+  if (authors.length === 0) {
     return <div>Author are not listed</div>
   }
-
-  const handleNameChange = (event) => {
-    setName(event.target.value)
-  }
-
-  const handleDOBChange = (event) => {
-    setDOB(event.target.value)
-  }
-
-  const clearInputs = () => {
-    setName('')
-    setDOB('')
-  }
-
-  const handleSaveAuthor = () => {
-    saveAuthor({
-      variables: {
-        name: name,
-        dob: dob,
-      },
-    })
-    clearInputs();
-  };
 
   return (
     <div>
@@ -142,11 +110,6 @@ const AuthorList = ({ authors }) => {
         <h3>Author List</h3>
       </div>
       {renderAuthorList()}
-      {isAuthenticated && <div style={{ background: "white" }}>
-        <TextField id="outlined-basic" label="Name" variant="outlined" value={name} onChange={handleNameChange} />
-        <TextField id="outlined-basic" label="Date of Birth" variant="outlined" value={dob} onChange={handleDOBChange} />
-        <Button size="small" primary onClick={handleSaveAuthor}>Add Author</Button>
-      </div>}
     </div>
   )
 }

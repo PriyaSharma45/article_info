@@ -11,6 +11,7 @@ const Main = () => {
         isAuthenticated,
         loginWithRedirect,
         logout,
+        loading : auth0Loading
     } = useAuth0();
 
     const { loading, error, data } = useSubscription(
@@ -22,7 +23,7 @@ const Main = () => {
         return (<div>Error</div>)
     }
 
-    if (loading) {
+    if (loading || auth0Loading) {
         return (<div>Loading Authors</div>)
     }
 
